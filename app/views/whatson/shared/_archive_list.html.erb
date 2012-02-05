@@ -1,0 +1,9 @@
+<%
+  archive_posts = whatson_archive_list
+%>
+<% if archive_posts.present? %>
+  <h2><%= t('archives', :scope => 'whatson.shared') %></h2>
+  <ul>
+    <%= archive_posts %>
+  </ul>
+<% end %>

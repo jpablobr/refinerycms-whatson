@@ -1,0 +1,10 @@
+<% if @whatson_posts.many? %>
+  <h2><%= t('.other') %></h2>
+  <ul id="whatson_posts">
+    <% @whatson_posts.each do |whatson_post| %>
+      <li class='clearfix'>
+        <%= link_to whatson_post.title, whatson_post_url(whatson_post) %>
+      </li>
+    <% end %>
+  </ul>
+<% end %>

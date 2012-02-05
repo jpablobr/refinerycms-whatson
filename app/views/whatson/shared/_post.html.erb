@@ -1,0 +1,46 @@
+<% if post.live? %>
+  <article class="whatson_post" id="<%= dom_id(post) %>">
+    <header>
+      <h1><%= link_to post.title, whatson_post_url(post) %></h1>
+      <section class='details'>
+        <time datetime="<%=l post.published_at.to_date, :format => :default %>" class='posted_at'>
+          <%= t('created_at', :scope => 'whatson.shared.posts', :when => l(post.published_at.to_date, :format => :short)) %>
+        </time>
+        <%= "#{t('by', :scope => 'whatson.posts.show')} #{post.author.username}" if post.author.present? %>.
+        <% if (categories = post.categories).any? %>
+          <aside class='filed_in'>
+            <%= t('filed_in', :scope => 'whatson.posts.show') %>
+            <%=raw categories.collect { |category| link_to category.title, whatson_category_url(category) }.to_sentence %>
+          </aside>
+        <% end %>
+        <% if (tags = post.tags).any? %>
+          <aside class='tagged'>
+            <%= t('tagged', :scope => 'whatson.posts.show') %>
+            <%=raw tags.collect { |tag| link_to tag, tagged_posts_path(tag.id, tag.name.parameterize) }.to_sentence %>
+          </aside>
+        <% end %>
+      </section>
+    </header>
+    <section class='clearfix'>
+      <% if whatson_post_teaser_enabled? %>
+        <%= whatson_post_teaser(post) %>
+      <% else %>
+        <%= post.body.html_safe %>
+      <% end %>
+    </section>
+    <footer>
+      <p>
+        <%= link_to t('read_more', :scope => 'whatson.shared.posts'), whatson_post_url(post) if whatson_post_teaser_enabled? %>
+      </p>
+      <aside class='comment_count'>
+        <% if WhatsonPost.comments_allowed? %>
+          <% if post.comments.any? %>
+             (<%= pluralize(post.comments.approved.count, t('singular', :scope => 'whatson.shared.comments')) %>)
+          <% else %>
+                (<%= t('none', :scope => 'whatson.shared.comments') %>)
+          <% end %>
+        <% end %>
+      </aside>
+    </footer>
+  </article>
+<% end %>

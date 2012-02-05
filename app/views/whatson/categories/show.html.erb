@@ -1,0 +1,21 @@
+<% content_for :body_content_title, @category.title %>
+
+<% content_for :body_content_left do %>
+  <% if @whatson_posts.any? %>
+    <section id="whatson_posts">
+      <%= render :partial => "/whatson/shared/post", :collection => @whatson_posts %>
+      <%= will_paginate @whatson_posts %>
+    </section>
+  <% else %>
+    <p>
+      <%= t('.no_posts') %>
+    </p>
+  <% end %>
+<% end %>
+
+<% content_for :body_content_right do %>
+  <%= render :partial => "/whatson/shared/categories" %>
+<% end %>
+
+<%= render :partial => "/shared/content_page" %>
+<% content_for :stylesheets, stylesheet_link_tag('refinerycms-whatson') %>

@@ -1,0 +1,63 @@
+<div id='actions'>
+  <h2><%= t('.details')%></h2>
+  <p>
+    <strong><%= t('.age') %>:</strong> <%= time_ago_in_words(@whatson_comment.created_at) %>
+  </p>
+  <h2><%= t('.actions') %></h2>
+  <ul>
+    <li>
+      <%= link_to t('.back'), {:action => 'index'}, :class => "back_icon" %>
+    </li>
+    <li>
+      <%= link_to t('.reject'), rejected_admin_whatson_comment_path(@whatson_comment, :return_to => 'rejected'),
+          :class => 'comment_cross_icon' unless @whatson_comment.rejected? %>
+    </li>
+    <li>
+      <%= link_to t('.approve'), approved_admin_whatson_comment_path(@whatson_comment, :return_to => 'approved'),
+          :class => 'comment_tick_icon' unless @whatson_comment.approved? %>
+    </li>
+  </ul>
+</div>
+<div id='records'>
+  <h2><%= t('.comment') %></h2>
+  <table id='inquiry'>
+    <tr>
+      <td>
+        <strong><%= t('.whatson_post') %></strong>
+      </td>
+      <td>
+        <%= link_to @whatson_comment.post.title,
+                    whatson_post_url(@whatson_comment.post, :anchor => "comment-#{@whatson_comment.to_param}"),
+                    :target => '_blank' %>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <strong><%= t('.from') %></strong>
+      </td>
+      <td>
+        <%= @whatson_comment.name %> [<%= mail_to @whatson_comment.email, @whatson_comment.email, {:title => t('.click_to_email')} %>]
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <strong><%= t('.date') %></strong>
+      </td>
+      <td>
+        <%= l(Date.parse(@whatson_comment.created_at.to_s), :format => :long) %>
+      </td>
+    </tr>
+    <tr>
+      <td valign='top'>
+        <strong><%= t('.message') %></strong>
+      </td>
+      <td>
+        <p style='margin-top: 0px'>
+          <%= @whatson_comment.message.gsub("\r\n\r\n", "\r\n").gsub("\r\n", "</p><p>") %>
+        </p>
+      </td>
+    </tr>
+  </table>
+</div>
+
+<% content_for :stylesheets, stylesheet_link_tag('refinery/refinerycms-whatson') %>
